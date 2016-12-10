@@ -72,9 +72,6 @@ PS1="$RESET$TMUX_PS1$GREEN\u$RESET@\h $YELLOW\W:$RESET\n $CYAN~\\$ $RESET"
 ########################################
 
 
-complete -W "$(</etc/hosts.booking)" ssh
-
-
 ## interactive shell?
 if [ -n "$PS1" ]; then
 	## interactive shell, so non-interactive, non-login child shells
@@ -102,6 +99,6 @@ if [[ $TERM == xterm ]]; then
 fi
 
 alias tmux="tmux -2"
-alias ls="ll"
+alias ls="ls -al"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
