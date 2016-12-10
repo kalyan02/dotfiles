@@ -20,9 +20,10 @@ Plug 'https://github.com/mileszs/ack.vim.git'
 Plug 'https://github.com/autowitch/hive.vim.git'
 Plug 'https://github.com/Shougo/unite.vim.git'
 Plug 'https://github.com/altercation/vim-colors-solarized.git'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+if v:version >= 704
+    Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+endif
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'fatih/vim-go', { 'tag': '*' }
@@ -53,7 +54,7 @@ set shiftwidth=4                " Number of spaces to use for autoindenting
 set tabstop=4                   " A tab is four spaces
 set smarttab                    " insert tabs at the start of a line according to
 set list                        " show invisible characters
-set listchars=tab:>Â·,trail:Â·    " but only show tabs and trailing whitespace
+set listchars=tab:>·,trail:·    " but only show tabs and trailing whitespace
 set number                      " Enable line numbers
 set numberwidth=3               " Line number width
 set showmatch                   " show matching paranthesis
