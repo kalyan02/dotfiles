@@ -82,9 +82,26 @@ fi
 if ! ps aux |grep $(whoami) |grep ssh-agent |grep -v grep >/dev/null; then ssh-agent ; fi
 
 # Link the latest ssh-agent socket
-ln -sf $(find /tmp -maxdepth 2 -type s -name "agent*" -user $USER -printf '%T@ %p\n' 2>/dev/null |sort -n|tail -1|cut -d' ' -f2) ~/.ssh/ssh_auth_sock
+unamestr=`uname`
+lastsock=""
+# OSX commands are slightly different in behaviour
+if [[ "$unamestr" == "Darwin" ]]; then
+    lastsock=$(find $TMPDIR -maxdepth 2 -name "agent*" -user $USER -exec stat -f "%m %N" {} \; | sort -n | tail -1 | cut -d' ' -f2)
+fi
+# and linux does its own thing
+if [[ "$unamestr" == "Linux" ]]; then
+    lastsock=$(find /tmp -maxdepth 2 -type s -name "agent*" -user $USER -printf '%T@ %p\n' 2>/dev/null |sort -n|tail -1|cut -d' ' -f2)
+fi
+
+if [[ "$lastsock" != "" ]]; then
+    ln -sf $lastsock ~/.ssh/ssh_auth_sock
+fi
 
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
+
+
+################################################################################################
+
 
 export EDITOR="vim"
 if [[ $TERM == xterm ]]; then
@@ -92,6 +109,11 @@ if [[ $TERM == xterm ]]; then
 fi
 
 alias tmux="tmux -2"
-alias ls="ls -al"
+
+if [[ "$unamestr" == "Linux" ]]; then
+    alias ls="ls -al --color=auto"
+else
+    alias ls="ls -al"
+fi
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
